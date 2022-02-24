@@ -13,6 +13,7 @@ app.use('/api',apiPage);
 
 mongoose.connect(URI)
 .then(()=>{
+    console.log('Mongoose Connected Successfully !!!');
     app.listen(8080,()=>{
         console.log('listening on http://localhost:8080');
     })
