@@ -6,7 +6,8 @@ const URI = `mongodb+srv://${process.env.NAME}:${process.env.DPASS}@cluster0.1td
 const apiPage = require('./module/feed');
 const authPage = require('./module/auth');
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 
 app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
