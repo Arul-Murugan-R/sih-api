@@ -16,7 +16,7 @@
   },
   "author": "Arjun",
   "license": "ISC",
-  "engine":{
+  "engines":{
     "node":"v16.14.0"
   }
 }

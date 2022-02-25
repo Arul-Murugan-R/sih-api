@@ -16,6 +16,12 @@ app.use((req,res,next) => {
 })
 app.use('/api',apiPage);
 app.use('/auth',authPage);
+app.use('/',(req, res,next)=>{
+    res.send('Working Properly')
+})
+app.use((req, res,next)=>{
+    res.status(404).json({message:'Page Not Found'})
+})
 
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode || 500;
