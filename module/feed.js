@@ -14,16 +14,35 @@ route.post('/data',
 ],
 (req,res,next)=>{
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
+    if(!errors.isEmpty){
         return res.status(500).json({data:'something went Wrong',error:errors.array()})
     }
     console.log(req.body)
-    res.status(201).json({data:'success'})
+    const data = new Data({
+        marks:req.body.marks,
+        status:req.body.status,
+        personality:req.body.personality,
+        agree:req.body.agree,
+        opens:req.body.opens,
+        aoi:req.body.aoi,
+    }) 
+    data.save(()=>{
+        res.status(201).json({message:'Successfully added to the db'})
+    })
 })
 
-route.get('/data',(req,res,next)=>{
-    console.log(req.body)
-    res.status(200).json({data:req.body.title})
+route.use('/data',(req,res,next)=>{
+    Data.find()
+    .then((dataSet)=>{
+        if(!dataSet){
+            return res.status(404).json({message: 'No data found in database'})
+        }
+        console.log(dataSet)
+        res.status(200).json({data:dataSet,message:'Data Fetched Successfully'})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
 })
 
 
