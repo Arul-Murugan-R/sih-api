@@ -5,21 +5,25 @@ const Data = require('../models/data')
 
 route.post('/data',
 [
-    body('marks').not().isEmpty().withMessage('Requires Mark'),
-    body('status').not().isEmpty().withMessage('Requires Econmical Stability'),
-    body('personality').not().isEmpty().withMessage('Requires Personality'),
-    body('agree').not().isEmpty().withMessage('Requires Agreeableness'),
-    body('opens').not().isEmpty().withMessage('Requires Openness'),
-    body('aoi').not().isEmpty().withMessage('Requires Area Of Interest'),
+    body('marks').isLength({min:1,max:3}).withMessage('Requires Mark'),
+    body('status').isLength({min:1,max:3}).withMessage('Requires Econmical Stability'),
+    body('personality').isLength({min:1,max:3}).withMessage('Requires Personality'),
+    body('agree').isLength({min:1,max:3}).withMessage('Requires Agreeableness'),
+    body('opens').isLength({min:1,max:3}).withMessage('Requires Openness'),
+    body('aoi').isLength({min:1,max:3}).withMessage('Requires Area Of Interest'),
 ],
 (req,res,next)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(500).json({data:'something went Wrong',error:errors.array()})
+    }
     console.log(req.body)
-    res.status(500).json({data:'success'})
+    res.status(201).json({data:'success'})
 })
 
 route.get('/data',(req,res,next)=>{
     console.log(req.body)
-    res.status(500).json({data:req.body.title})
+    res.status(200).json({data:req.body.title})
 })
 
 
