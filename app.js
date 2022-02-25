@@ -11,6 +11,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api',apiPage);
 app.use('/auth',authPage);
 
+app.use((err,req,res,next)=>{
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Something went wrong'
+    const errors = err.errors
+    console.log(errors)
+    res.status(statusCode).json({message: message});
+})
+
 mongoose.connect(URI)
 .then(()=>{
     console.log('Mongoose Connected Successfully !!!');
