@@ -14,8 +14,10 @@ route.post('/data',
 ],
 (req,res,next)=>{
     const errors = validationResult(req);
-    if(!errors.isEmpty){
-        return res.status(500).json({data:'something went Wrong',error:errors.array()})
+    if(!errors.isEmpty()){
+        errors.statusCode = 442;
+        errors.message = 'Data Should be filled Completely'
+        throw errors
     }
     console.log(req.body)
     const data = new Data({
@@ -26,8 +28,16 @@ route.post('/data',
         opens:req.body.opens,
         aoi:req.body.aoi,
     }) 
-    data.save(()=>{
+    data.save()
+    .then(()=>{
         res.status(201).json({message:'Successfully added to the db'})
+    })
+    .catch(err=>{
+        console.log(err)
+        if(!err.statusCode){
+            err.statusCode = 442
+        }
+        next(err)
     })
 })
 
@@ -35,13 +45,19 @@ route.use('/data',(req,res,next)=>{
     Data.find()
     .then((dataSet)=>{
         if(!dataSet){
-            return res.status(404).json({message: 'No data found in database'})
+            const error = new Error('No data found in database')
+            error.statusCode = 404;
+            throw error
         }
         console.log(dataSet)
         res.status(200).json({data:dataSet,message:'Data Fetched Successfully'})
     })
     .catch(err=>{
         console.log(err)
+        if(!err.statusCode){
+            err.statusCode = 442
+        }
+        next(err)
     })
 })
 
