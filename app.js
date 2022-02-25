@@ -9,7 +9,7 @@ const authPage = require('./module/auth');
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api',apiPage);
-// app.use('/auth',authPage);
+app.use('/auth',authPage);
 
 mongoose.connect(URI)
 .then(()=>{
