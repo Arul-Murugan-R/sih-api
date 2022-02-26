@@ -24,8 +24,14 @@ app.use((req, res,next)=>{
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Something went wrong'
-    const errors = err.errors
+    const errors = err.cons
     console.log(errors)
+    if(errors){
+        let output = errors[0].msg
+        if(output){
+        return res.status(statusCode).json({message: message,output: output});
+        }
+    }
     res.status(statusCode).json({message: message});
 })
 
