@@ -1,9 +1,10 @@
 const route = require('express').Router();
 const {body,validationResult} = require('express-validator/check')
 
+const isAuth = require('../middleware/isAuth')
 const Data = require('../models/data')
 
-route.post('/data',
+route.post('/data',isAuth,
 [
     body('marks').isLength({min:1,max:3}).withMessage('Requires Mark'),
     body('status').isLength({min:1,max:3}).withMessage('Requires Econmical Stability'),
@@ -30,6 +31,7 @@ route.post('/data',
         agree:req.body.agree,
         opens:req.body.opens,
         aoi:req.body.aoi,
+        userId:req.userId
     }) 
     data.save()
     .then(()=>{
@@ -44,7 +46,7 @@ route.post('/data',
     })
 })
 
-route.use('/data',(req,res,next)=>{
+route.use('/data',isAuth,(req,res,next)=>{
     Data.find()
     .then((dataSet)=>{
         if(!dataSet){
