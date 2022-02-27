@@ -1,4 +1,5 @@
 const route = require('express').Router();
+const jwt = require('jsonwebtoken')
 
 const {body,validationResult} = require('express-validator/check')
 const bcrypt = require('bcrypt')
@@ -35,7 +36,11 @@ route.post('/login',
                 error.statusCode = 401
                 throw error
             }
-            res.status(200).json({message:'Working Good',userId:result._id})
+            const token = jwt.sign({
+                email:result.email,
+                userId:result._id.toString(),
+            },process.env.SECRET,{expiresIn:'7d'})
+            res.status(200).json({message:'Logined Successfully',token:token,userId:result._id.toString()})
 
         })
         .catch(err=>{
