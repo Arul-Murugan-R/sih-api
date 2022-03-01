@@ -2,7 +2,63 @@ const route = require('express').Router();
 const {body,validationResult} = require('express-validator/check')
 
 const isAuth = require('../middleware/isAuth')
-const Data = require('../models/data')
+const Data = require('../models/data').input
+const Output = require('../models/data').output
+
+route.post('/output',isAuth,(req,res,next)=>{
+    console.log(req.body)
+    Output.findOne({userId:req.userId})
+    .then((result)=>{
+        if(result){
+            result.prediction = req.body.prediction
+            result.whole1= req.body.whole1
+            result.mean = req.body.mean
+            return result.save()
+        }
+        const output = new Output({
+            prediction: req.body.prediction,
+            whole1: req.body.whole1,
+            mean:req.body.mean,
+            userId:req.userId
+        })
+        return output.save()
+    })
+    .then(()=>{
+        res.status(201).json({message:'Output Added to the db'})
+    })
+    .catch(err=>{
+        console.log(err)
+        if(!err.statusCode){
+            err.statusCode = 500
+        }
+        next(err)
+    })
+})
+route.get('/output',isAuth,(req,res,next)=>{
+    console.log(req.user)
+    if(!req.user){
+        const err = new Error('Login to Account Before Seeing the Prediction')
+        err.statusCode=401
+        throw err
+    }
+    Output.findOne({userId:req.userId})
+    .then((result)=>{
+        if(!result){
+            const err = new Error('Currently no predictions found for this user')
+            err.statusCode = 401
+            throw (err)
+        }
+        res.status(200).json({message:'Prediction Successfully fetched from the db',result:result})
+    })
+    .catch(err=>{
+        console.log(err)
+        if(!err.statusCode){
+            err.statusCode = 500
+        }
+        next(err)
+    })
+})
+
 
 route.post('/data',isAuth,
 [
