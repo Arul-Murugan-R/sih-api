@@ -40,4 +40,20 @@ const dataSchema = new Schema({
 
 
 
-module.exports = mongoose.model('data',dataSchema)
+exports.input = mongoose.model('data',dataSchema)
+
+const outputSchema = new Schema({
+    prediction:{
+        type:String,
+    },
+    mean:{
+        type:Number,
+    },
+    whole1:Array,
+    userId:{
+        type:Schema.Types.ObjectId,
+        ref:'users'
+    }
+},{timestamps:true})
+
+exports.output = mongoose.model('outputs',outputSchema)
