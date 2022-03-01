@@ -12,7 +12,7 @@ module.exports = (req,res,next)=>{
     console.log('token',token)
     let jwtVerification
     try{
-    jwtVerification = jwt.verify(token,'somethingsecrettoserver')
+    jwtVerification = jwt.verify(token,process.env.SECRET)
     }catch(err){
         err.statusCode = 500
         throw err
