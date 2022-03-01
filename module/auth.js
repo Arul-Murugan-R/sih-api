@@ -40,7 +40,7 @@ route.post('/login',
                 email:result.email,
                 userId:result._id.toString(),
             },process.env.SECRET,{expiresIn:'7d'})
-            res.status(200).json({message:'Logined Successfully',token:token,userId:result._id.toString()})
+            res.status(200).json({message:'Logined Successfully',token:token,userId:result._id.toString(),name:result.name})
 
         })
         .catch(err=>{
