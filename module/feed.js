@@ -35,8 +35,8 @@ route.post('/output',isAuth,(req,res,next)=>{
     })
 })
 route.get('/output',isAuth,(req,res,next)=>{
-    console.log(req.user)
-    if(!req.user){
+    console.log(req.userId)
+    if(!req.userId){
         const err = new Error('Login to Account Before Seeing the Prediction')
         err.statusCode=401
         throw err
