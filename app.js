@@ -5,8 +5,13 @@ require('dotenv').config()
 const URI = `mongodb+srv://${process.env.NAME}:${process.env.DPASS}@cluster0.1tdiu.mongodb.net/${process.env.dbname}`
 const apiPage = require('./module/feed');
 const authPage = require('./module/auth');
+const portalPage = require('./module/portData');
 
-// app.use(express.urlencoded({ extended: true }));
+
+app.use(express.urlencoded({ extended: true }));
+app.set('view engine','ejs')
+app.set('views','views')
+
 app.use(express.json())
 
 app.use((req,res,next) => {
@@ -17,6 +22,8 @@ app.use((req,res,next) => {
 })
 app.use('/api',apiPage);
 app.use('/auth',authPage);
+app.use('/portal',portalPage);
+
 app.use((req, res,next)=>{
     res.status(404).json({message:'Page Not Found'})
 })
