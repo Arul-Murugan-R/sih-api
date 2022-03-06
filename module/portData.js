@@ -31,8 +31,8 @@ route.post('/',(req, res,next)=>{
 })
 
 
-route.use('/', (req,res,next) => {
-    res.render('sih-data');
-})
+// route.use('/', (req,res,next) => {
+//     res.render('sih-data');
+// })
 
 module.exports = route
