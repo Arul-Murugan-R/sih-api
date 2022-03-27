@@ -1,7 +1,7 @@
 # sih-api
 Api for smart india hackathon
 
-Use gitpod
+Use gitpod extension
 
 ```
 npm install
