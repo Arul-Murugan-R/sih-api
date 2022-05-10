@@ -5,6 +5,7 @@ Api for smart india hackathon
 
 ```
 npm install
+npm start
 ```
 Database used Mongodb
 Mongoose
